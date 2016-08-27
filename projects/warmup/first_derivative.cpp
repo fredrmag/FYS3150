@@ -1,6 +1,6 @@
 /*
 **
-**  Warmup exercise - Computational Physics  2016
+**  Warmup exercise - Computational Physics, 2016
 **
 **  Program to compute the first derivative of arctan(x) for different 
 **  step lenghts, h, when x is set to sqrt(2). It contains two functions,
@@ -55,14 +55,19 @@ void output(double *h_step, double *computed_derivative_2point,
   int i;
   ofile << "RESULTS:" << endl;
   ofile << setiosflags(ios::showpoint | ios::uppercase);
-
-  for(i = 0; i < number_of_steps; i++){
+  
+  // Print headers
+  ofile << setw(15) << "step size [h]"
+	<< setw(15) << "f'_(2c)"
+	<< setw(15) << "f'_(3c)" << endl;
+  
+  for(i = 0; i < number_of_steps; i++){  
+    // Print the results
     ofile << setw(15) << setprecision(8) << h_step[i];
     ofile << setw(15) << setprecision(8) << computed_derivative_2point[i];
     ofile << setw(15) << setprecision(8) << computed_derivative_3point[i] << endl;
   }
 } // End of output function
-
 
 int main(int argc, char* argv[]){
   // declare variables
@@ -80,7 +85,7 @@ int main(int argc, char* argv[]){
        << "; n_steps=" << number_of_steps << endl;
   
   // open output file
-  ofile.open("RESULTS.TXT", fstream::in | fstream::out | fstream::app);
+  ofile.open("RESULTS.TXT", fstream::in | fstream::out | fstream::trunc);
   
   // Allocate space in the memory for h_step, computed_derivative_2point,
   // and computed_derivative_3point.
@@ -88,14 +93,11 @@ int main(int argc, char* argv[]){
   computed_derivative_2point = new double[number_of_steps];
   computed_derivative_3point = new double[number_of_steps];
 
-  
-
   // Compute the first derivative of arctan(x)
   first_derivative(number_of_steps, x, initial_step, h_step,
 		   computed_derivative_2point,computed_derivative_3point);
   
   // Print the results to file
-  
   output(h_step, computed_derivative_2point, computed_derivative_3point,
 	 x, number_of_steps);
   
