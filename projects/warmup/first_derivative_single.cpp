@@ -6,8 +6,8 @@
 **  step lenghts, h, when x is set to sqrt(2). It contains two functions,
 **  one for computing the first derivative using 2 and 3 points for different 
 **  step sizes h, which are decaying by a factor of two for each iteration. The
-**  other function outputs the results to the file RESULTS_DOUBLE.txt. This 
-**  program uses double precision. 
+**  other function outputs the results to the file RESULTS_SINGLE.txt. This 
+**  program uses single precision. 
 **
 **  This program is strongly influenced by the second derivative program,
 **  more specificly program3.cpp in chapter03, in the lecture notes of the 
@@ -19,18 +19,18 @@ using namespace std;
 #include <cmath>
 #include <iomanip>
 
-void first_derivative(int, double, double, double *, double *, double *);
-void output(double *, double *, double *, double, int);
+void first_derivative(int, float, float, float *, float *, float *);
+void output(float *, float *, float *, float, int);
 
 ofstream ofile;
 
 // Function to calculate the first derivative of arctan(x) with 2 and 3 points.
-void first_derivative(int number_of_steps, double x, double initial_step,
-		      double *h_step, double *computed_derivative_2point,
-		      double *computed_derivative_3point){
+void first_derivative(int number_of_steps, float x, float initial_step,
+		      float *h_step, float *computed_derivative_2point,
+		      float *computed_derivative_3point){
   // Initialize variables, step size, h and counter
   int counter;
-  double h;
+  float h;
   h = initial_step;
 
   // The step size will gradually go from initial_step towards 0,
@@ -50,9 +50,9 @@ void first_derivative(int number_of_steps, double x, double initial_step,
 } // End of function first_derivative
 
 // Function to output the results to a txt file
-void output(double *h_step, double *computed_derivative_2point,
-	    double *computed_derivative_3point,
-	    double x, int number_of_steps){
+void output(float *h_step, float *computed_derivative_2point,
+	    float *computed_derivative_3point,
+	    float x, int number_of_steps){
   int i;
   ofile << "RESULTS:" << endl;
   ofile << setiosflags(ios::showpoint | ios::uppercase);
@@ -73,8 +73,8 @@ void output(double *h_step, double *computed_derivative_2point,
 int main(int argc, char* argv[]){
   // declare variables
   int number_of_steps;
-  double x, initial_step;
-  double *h_step, *computed_derivative_2point, *computed_derivative_3point;
+  float x, initial_step;
+  float *h_step, *computed_derivative_2point, *computed_derivative_3point;
 
   // Set intial step, x and number_of_steps, and output file name
   initial_step = 1000.0;
@@ -86,13 +86,13 @@ int main(int argc, char* argv[]){
        << "; n_steps=" << number_of_steps << endl;
   
   // open output file
-  ofile.open("RESULTS_DOUBLE.TXT", fstream::in | fstream::out | fstream::trunc);
+  ofile.open("RESULTS_SINGLE.TXT", fstream::in | fstream::out | fstream::trunc);
   
   // Allocate space in the memory for h_step, computed_derivative_2point,
   // and computed_derivative_3point.
-  h_step = new double[number_of_steps];
-  computed_derivative_2point = new double[number_of_steps];
-  computed_derivative_3point = new double[number_of_steps];
+  h_step = new float[number_of_steps];
+  computed_derivative_2point = new float[number_of_steps];
+  computed_derivative_3point = new float[number_of_steps];
 
   // Compute the first derivative of arctan(x)
   first_derivative(number_of_steps, x, initial_step, h_step,
