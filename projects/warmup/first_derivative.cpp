@@ -64,9 +64,9 @@ void output(double *h_step, double *computed_derivative_2point,
   
   for(i = 0; i < number_of_steps; i++){  
     // Print the results
-    ofile << setw(15) << setprecision(8) << h_step[i];
-    ofile << setw(15) << setprecision(8) << computed_derivative_2point[i];
-    ofile << setw(15) << setprecision(8) << computed_derivative_3point[i] << endl;
+    ofile << setw(25) << setprecision(16) << h_step[i];
+    ofile << setw(25) << setprecision(16) << computed_derivative_2point[i];
+    ofile << setw(25) << setprecision(16) << computed_derivative_3point[i] << endl;
   }
 } // End of output function
 
@@ -86,7 +86,7 @@ int main(int argc, char* argv[]){
        << "; n_steps=" << number_of_steps << endl;
   
   // open output file
-  ofile.open("RESULTS_DOUBLE.TXT", fstream::in | fstream::out | fstream::trunc);
+  ofile.open("RESULTS_DOUBLE_16.TXT", fstream::in | fstream::out | fstream::trunc);
   
   // Allocate space in the memory for h_step, computed_derivative_2point,
   // and computed_derivative_3point.
