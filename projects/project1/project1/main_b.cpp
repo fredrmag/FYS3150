@@ -1,5 +1,11 @@
 /**
-  Description of Project 1
+    Project 1 FYS3150 UiO (University of Oslo)
+    Fredrik Magnussen, fredrma@gmail.com
+
+    Solving linear second-order differential equations
+    with a tridiagonal system.
+
+    Task 1b)
   **/
 
 #include <iostream>
@@ -77,11 +83,13 @@ string get_time_now(){
     return asctime(now);
 }
 
+// Function which outputs our data as two columns with a header
+// that prints some relevant information.
 void output(double *column1, double *column2, int n){
     // Write the results to a file
-    // Filename will be on the format data_nXX.dat
+    // Filename will be on the format data_n<number of gridpoints>.dat
     ostringstream oss;
-    oss << "../results/data_n" << n << ".dat";
+    oss << "../results/data_n" << n << "_b.dat";
     string out_filename = oss.str();
     cout << "Output the results to: " << out_filename << endl;
     // Convert std::string to char*:
