@@ -3,8 +3,13 @@
   **/
 
 #include <iostream>
+#include <string>
+#include <iomanip>
+#include <sstream>
+#include <fstream>
 #include <stdlib.h>
 #include <math.h>
+#include <ctime>
 
 using namespace std;
 
@@ -37,6 +42,7 @@ void populate_vectors(int n, double *a, double *b, double *c, double *x, double 
         b[i] = 2.0;
         c[i] = -1.0;
     }
+    return;
 }
 
 // Function which solve the set of linear equations when the matrix is
@@ -61,6 +67,43 @@ void solve_tridiagonal(int n, double *a, double *b, double *c, double *b_tilde, 
     for (i = n-1; i>=1; i--){
         u[i] -= temp[i+1]*u[i+1];
     }
+    return;
+}
+
+// Function which gets the current time
+string get_time_now(){
+    time_t t = time(0);   // get time now
+    struct tm * now = localtime( & t );
+    return asctime(now);
+}
+
+void output(double *column1, double *column2, int n){
+    // Write the results to a file
+    // Filename will be on the format data_nXX.dat
+    ostringstream oss;
+    oss << "../results/data_n" << n << ".dat";
+    string out_filename = oss.str();
+    cout << "Output the results to: " << out_filename << endl;
+    // Convert std::string to char*:
+    const char* cstr_ofilename = out_filename.c_str();
+
+    ofstream ofile(cstr_ofilename);
+
+    // Add header to output file
+    ofile << "Project 1 - FYS3150" << endl
+          <<"Solving the one-dimensional Poissons equation" << endl;
+    ofile << "n = " << n << endl;
+    ofile << get_time_now() << endl;
+
+    int i;
+    // Populate the file
+    for (i=0; i<=n+1; i++){
+        ofile << setw(25) << setprecision(16) << column1[i];
+        ofile.setf(ios::scientific, ios::floatfield);
+        ofile << setw(25) << setprecision(16) << column2[i] << endl;
+    }
+    ofile.close();
+    return;
 }
 
 int main(int argc, char* argv[])
@@ -102,6 +145,9 @@ int main(int argc, char* argv[])
 
     // Solve the tridiagonal system
     solve_tridiagonal(n, a, b, c, b_tilde, u, temp);
+
+    // Output our results to file
+    output(x,u,n);
 
     // Deallocate vectors
     delete [] a;
