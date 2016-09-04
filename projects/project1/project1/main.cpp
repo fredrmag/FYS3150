@@ -94,6 +94,7 @@ void output(double *column1, double *column2, int n){
           <<"Solving the one-dimensional Poissons equation" << endl;
     ofile << "n = " << n << endl;
     ofile << get_time_now() << endl;
+    ofile << setw(25) << "x(i)" << setw(25) << "u(i)" << endl;
 
     int i;
     // Populate the file
