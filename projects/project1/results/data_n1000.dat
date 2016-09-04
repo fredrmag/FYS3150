@@ -1,9 +1,9 @@
 Project 1 - FYS3150
 Solving the one-dimensional Poissons equation
 n = 1000
-Sun Sep  4 14:03:54 2016
+Sun Sep  4 14:26:20 2016
 
-                     x(i)                     u(i)
+                     x(i)                     v(i)
                         0   0.0000000000000000e+00
    9.9900099900099900e-04   8.9412455874427026e-03
    1.9980019980019980e-03   1.7783682917767267e-02

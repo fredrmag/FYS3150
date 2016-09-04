@@ -17,16 +17,16 @@ void populate_vectors(int, double *, double *, double *, double *, double *, dou
 void solve_tridiagonal(int, double *, double *, double *, double *, double *, double *, double *);
 
 // Function which populates the vectors with our given function and boundary condtitions
-void populate_vectors(int n, double *a, double *b, double *c, double *x, double *b_tilde, double *u){
+void populate_vectors(int n, double *a, double *b, double *c, double *x, double *b_tilde, double *v){
     // Intitialize variables
     double h;
     int i;
 
     // Put boundary conditions
     x[0] = 0;
-    u[0] = 0;
+    v[0] = 0;
     x[n+2] = 1;
-    u[n+2] = 0;
+    v[n+2] = 0;
 
     // step length
     h = 1.0/(n+1.0);
@@ -48,24 +48,24 @@ void populate_vectors(int n, double *a, double *b, double *c, double *x, double 
 // Function which solve the set of linear equations when the matrix is
 // a tridiagonal matrix. The algorithm is given by Teukolsky et al,
 // and consists of a forward and backward substitution.
-void solve_tridiagonal(int n, double *a, double *b, double *c, double *b_tilde, double *u, double* temp){
+void solve_tridiagonal(int n, double *a, double *b, double *c, double *b_tilde, double *v, double* temp){
     // Declare variables
     double btemp;
     int i;
 
     btemp = b[1];
-    u[1] = b_tilde[1]/btemp;
+    v[1] = b_tilde[1]/btemp;
 
     // Forward substitution
     for (i = 2; i <= n; i++){
         temp[i] = c[i-1]/btemp;
         btemp = b[i] - a[i]*temp[i];
-        u[i] = (b_tilde[i]-a[i]*u[i-1])/btemp;
+        v[i] = (b_tilde[i]-a[i]*v[i-1])/btemp;
     }
 
     // Backward substitution
     for (i = n-1; i>=1; i--){
-        u[i] -= temp[i+1]*u[i+1];
+        v[i] -= temp[i+1]*v[i+1];
     }
     return;
 }
@@ -94,7 +94,7 @@ void output(double *column1, double *column2, int n){
           <<"Solving the one-dimensional Poissons equation" << endl;
     ofile << "n = " << n << endl;
     ofile << get_time_now() << endl;
-    ofile << setw(25) << "x(i)" << setw(25) << "u(i)" << endl;
+    ofile << setw(25) << "x(i)" << setw(25) << "v(i)" << endl;
 
     int i;
     // Populate the file
@@ -113,7 +113,7 @@ int main(int argc, char* argv[])
     int n;
 
     // vectors
-    double *a, *b, *c, *x, *b_tilde, *u, *temp;
+    double *a, *b, *c, *x, *b_tilde, *v, *temp;
 
     // Welcome message
     cout << "FYS3150 - Project 1 - Fall 2016" << endl;
@@ -135,26 +135,27 @@ int main(int argc, char* argv[])
     c = new double [n+1];
     temp = new double [n+1];
 
-    // The vectors, x, u, and, b_tilde, are going from 0->n+1. Thus, we need to allocate
+    // The vectors, x, v, and, b_tilde, are going from 0->n+1. Thus, we need to allocate
     // n+1-0+1=n+2 elements
     x = new double [n+2];
-    u = new double [n+2];
+    v = new double [n+2];
     b_tilde = new double [n+2];
 
     // Populate vectors
-    populate_vectors(n, a, b, c, x, b_tilde, u);
+    populate_vectors(n, a, b, c, x, b_tilde, v);
 
     // Solve the tridiagonal system
-    solve_tridiagonal(n, a, b, c, b_tilde, u, temp);
+    solve_tridiagonal(n, a, b, c, b_tilde, v, temp);
 
     // Output our results to file
-    output(x,u,n);
+    output(x, v, n);
 
     // Deallocate vectors
     delete [] a;
     delete [] b;
     delete [] c;
     delete [] x;
+    delete [] v;
     delete [] b_tilde;
     delete [] temp;
 
